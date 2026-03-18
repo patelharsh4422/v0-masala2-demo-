@@ -53,7 +53,7 @@ export function BanquetsSection({ onEnquire }: BanquetsSectionProps) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Image */}
           <div className="relative">
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden">
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
               <Image
                 src="/images/banquet-hall.jpg"
                 alt="Magic Masala Banquet Hall"

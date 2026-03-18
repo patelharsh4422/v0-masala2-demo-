@@ -67,7 +67,7 @@ export function PaymentModal({ isOpen, onClose, amount = 0 }: PaymentModalProps)
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="sm:max-w-[500px] bg-card border-border">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl text-foreground">

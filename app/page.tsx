@@ -18,6 +18,10 @@ export default function HomePage() {
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [paymentAmount, setPaymentAmount] = useState(0);
 
+  const handleOrderOpen = () => {
+    setIsOrderOpen(true);
+  };
+
   const handleCheckout = (amount: number) => {
     setPaymentAmount(amount);
     setIsPaymentOpen(true);
@@ -29,7 +33,7 @@ export default function HomePage() {
       
       <Hero
         onBookTable={() => setIsBookingOpen(true)}
-        onOrderOnline={() => setIsOrderOpen(true)}
+        onOrderOnline={handleOrderOpen}
       />
       
       <MenuSection />

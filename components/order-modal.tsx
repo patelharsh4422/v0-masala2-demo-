@@ -83,7 +83,7 @@ export function OrderModal({ isOpen, onClose, onCheckout }: OrderModalProps) {
   const categories = [...new Set(menuItems.map((item) => item.category))];
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[700px] h-[90vh] flex flex-col bg-card border-border p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="font-serif text-2xl text-foreground">
