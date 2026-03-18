@@ -53,7 +53,7 @@ export function BanquetsSection({ onEnquire }: BanquetsSectionProps) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Image */}
           <div className="relative">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+            <div className="rounded-2xl overflow-hidden" style={{ position: 'relative', aspectRatio: '4/3' }}>
               <Image
                 src="/images/banquet-hall.jpg"
                 alt="Magic Masala Banquet Hall"
