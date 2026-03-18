@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
 import { Plus, Minus, ShoppingCart, X } from "lucide-react";
 
 interface OrderModalProps {
@@ -84,8 +84,8 @@ export function OrderModal({ isOpen, onClose, onCheckout }: OrderModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[700px] max-h-[90vh] flex flex-col bg-card border-border p-0 overflow-hidden">
-        <DialogHeader className="p-6 pb-4 flex-shrink-0">
+      <DialogContent className="sm:max-w-[700px] bg-card border-border p-0">
+        <DialogHeader className="p-6 pb-4">
           <DialogTitle className="font-serif text-2xl text-foreground">
             Order Online
           </DialogTitle>
@@ -94,7 +94,7 @@ export function OrderModal({ isOpen, onClose, onCheckout }: OrderModalProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <ScrollArea className="flex-1 min-h-0 px-6">
+        <div className="overflow-y-auto max-h-[50vh] px-6">
           <div className="space-y-8 py-4">
             {categories.map((category) => (
               <div key={category}>
@@ -164,7 +164,7 @@ export function OrderModal({ isOpen, onClose, onCheckout }: OrderModalProps) {
               </div>
             ))}
           </div>
-        </ScrollArea>
+        </div>
 
         {/* Cart Summary */}
         {cart.length > 0 && (
