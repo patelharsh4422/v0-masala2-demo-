@@ -43,15 +43,17 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
 const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // 1. INSTANT SUCCESS (No more 19-second wait)
+    setIsSubmitting(true);
+    setError(null);
+
+    // 1. INSTANT SUCCESS UI
     setIsSuccess(true);
     setIsSubmitting(false);
 
     try {
-     const supabase = createClient();
+      const supabase = createClient();
       
-      // Save in background so the UI stays fast
+      // 2. BACKGROUND SAVE (No 'await' means no 19-second wait)
       supabase.from("reservations").insert({
         customer_name: formData.customer_name,
         phone: formData.phone,
@@ -60,14 +62,13 @@ const handleSubmit = async (e: React.FormEvent) => {
         reservation_time: formData.reservation_time,
         special_requests: formData.special_requests || null,
       }).then(({ error: dbError }) => {
-        if (dbError) console.error("Database save failed:", dbError.message);
-      });}
+        if (dbError) console.error("Database error:", dbError.message);
+      });
 
     } catch (err) {
-      console.error("Logic error:", err);
+      console.error("Booking error:", err);
     }
-  };
-  }; // <--- This bracket fixes the build error!
+  }; // <--- THIS BRACKET IS THE MOST IMPORTANT PART
 
   const today = new Date().toISOString().split("T")[0];
   return (
