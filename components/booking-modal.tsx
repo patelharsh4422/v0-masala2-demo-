@@ -41,36 +41,56 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
     special_requests: "",
   });
 
-const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
 
-    // 1. INSTANT SUCCESS UI
-    setIsSuccess(true);
-    setIsSubmitting(false);
-
     try {
       const supabase = createClient();
-      
-      // 2. BACKGROUND SAVE (No 'await' means no 19-second wait)
-      supabase.from("reservations").insert({
-        customer_name: formData.customer_name,
-        phone: formData.phone,
-        guests: parseInt(formData.guests),
-        reservation_date: formData.reservation_date,
-        reservation_time: formData.reservation_time,
-        special_requests: formData.special_requests || null,
-      }).then(({ error: dbError }) => {
-        if (dbError) console.error("Database error:", dbError.message);
-      });
+      const { error: dbError, status } = await supabase.from("reservations").insert({
+      customer_name: formData.customer_name,
+      phone: formData.phone,
+      guests: parseInt(formData.guests),
+      reservation_date: formData.reservation_date,
+      reservation_time: formData.reservation_time,
+      special_requests: formData.special_requests || null,
+    });
 
+    // This is the "Safe Check" we talked about
+    if (!dbError && (status === 201 || status === 200)) {
+      setIsSuccess(true);
+    } else {
+      console.error("Database Error:", dbError);
+      setError("Something went wrong. Please try again or call us.");
+    }
+
+      setIsSuccess(true);
     } catch (err) {
       console.error("Booking error:", err);
+      setError("Failed to submit reservation. Please try again or call us directly.");
+    } finally {
+      setIsSubmitting(false);
     }
-  }; // <--- THIS BRACKET IS THE MOST IMPORTANT PART
+  };
 
+  const handleClose = () => {
+    setIsSuccess(false);
+    setError(null);
+    setFormData({
+      customer_name: "",
+      phone: "",
+      guests: "2",
+      reservation_date: "",
+      reservation_time: "",
+      special_requests: "",
+    });
+    onClose();
+  };
+
+  // Get minimum date (today)
   const today = new Date().toISOString().split("T")[0];
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="sm:max-w-[500px] bg-card border-border">
