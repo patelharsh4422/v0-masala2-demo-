@@ -61,7 +61,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         special_requests: formData.special_requests || null,
       }).then(({ error: dbError }) => {
         if (dbError) console.error("Database save failed:", dbError.message);
-      });
+      });}
 
     } catch (err) {
       console.error("Logic error:", err);
