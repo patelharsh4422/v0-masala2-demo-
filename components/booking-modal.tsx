@@ -49,9 +49,9 @@ const handleSubmit = async (e: React.FormEvent) => {
     setIsSubmitting(false);
 
     try {
-      const supabase = createClient();
+     const supabase = createClient();
       
-      // 2. Save in background without 'await' so the UI stays fast
+      // Save in background so the UI stays fast
       supabase.from("reservations").insert({
         customer_name: formData.customer_name,
         phone: formData.phone,
@@ -66,6 +66,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     } catch (err) {
       console.error("Logic error:", err);
     }
+  };
   }; // <--- This bracket fixes the build error!
 
   const today = new Date().toISOString().split("T")[0];
