@@ -48,18 +48,21 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
     try {
       const supabase = createClient();
-      
-      const { error: dbError } = await supabase.from("reservations").insert({
-        customer_name: formData.customer_name,
-        phone: formData.phone,
-        guests: parseInt(formData.guests),
-        reservation_date: formData.reservation_date,
-        reservation_time: formData.reservation_time,
-        special_requests: formData.special_requests || null,
-      });
+      const { error: dbError, status } = await supabase.from("reservations").insert({
+      customer_name: formData.customer_name,
+      phone: formData.phone,
+      guests: parseInt(formData.guests),
+      reservation_date: formData.reservation_date,
+      reservation_time: formData.reservation_time,
+      special_requests: formData.special_requests || null,
+    });
 
-      if (dbError) {
-      console.log("Supabase saved but reported:", dbError.message);
+    // This is the "Safe Check" we talked about
+    if (!dbError && (status === 201 || status === 200)) {
+      setIsSuccess(true);
+    } else {
+      console.error("Database Error:", dbError);
+      setError("Something went wrong. Please try again or call us.");
     }
 
       setIsSuccess(true);
